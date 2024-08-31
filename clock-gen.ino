@@ -6,7 +6,7 @@ const int MONO_PIN = 6;
 const int FRQ_PIN = 3;
 const int OUT_PIN = 2;
 const int HALT_PIN = 13;
-const int DELAYS[5] = {500, 250, 100, 50, 20};
+const int DELAYS[6] = {1000, 500, 250, 100, 50, 20};
 
 int delay_index = 0;
 int astable = 1;
