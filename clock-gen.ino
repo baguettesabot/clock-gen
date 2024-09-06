@@ -6,7 +6,7 @@ const int MONO_PIN = 6;
 const int FRQ_PIN = 3;
 const int OUT_PIN = 2;
 const int HALT_PIN = 13;
-const int DELAYS[5] = {1000, 500, 250, 100, 50};
+const int DELAYS[4] = {1000, 500, 100, 40}; // 60, 120, 600, 1500 HZ
 
 int delay_index = 0;
 int astable = 1;
@@ -88,20 +88,18 @@ void change_delay()
 		delay_index = 0;
 }
 
-void pulse(int pin, int duration, int *last_write_type, unsigned long *last_tick)
+void pulse(int pin, int delay, int *last_write_type, unsigned long *last_tick)
 {
 	unsigned long now = millis();
 
-	if ((now - *last_tick) < duration)
+	if (*last_write_type == HIGH && (now - *last_tick) >= ADVANCE_DURATION) {
+		*last_write_type = LOW;
+	} else if (*last_write_type == LOW && (now - *last_tick) >= (delay - ADVANCE_DURATION)) {
+		*last_write_type = HIGH;
+	} else {
 		return;
-
-	switch (*last_write_type) {
-		case LOW:
-			*last_write_type = HIGH;
-			break;
-		default:
-			*last_write_type = LOW;
 	}
+
 	digitalWrite(pin, *last_write_type);
 	*last_tick = now;
 }
