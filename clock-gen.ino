@@ -32,6 +32,7 @@ void read_input(int pin)
 	unsigned long now = millis();
 	int read = digitalRead(pin);
 
+  // debounce switch input
 	if (intermediate[index] != read) {
 		intermediate[index] = read;
 		last_tick[index] = now;
@@ -52,6 +53,7 @@ void toggle()
 		astable = 1;
 }
 
+// monostable
 void single_advance()
 {
 	unsigned long now = millis();
@@ -66,6 +68,7 @@ void single_advance()
 
 }
 
+// monostable pulse
 void advance_off()
 {
 	unsigned long now = millis();
@@ -79,6 +82,7 @@ void advance_off()
 	last_tick[1] = now;
 }
 
+// astable, change frequency
 void change_delay()
 {
 	int array_length = *(&DELAYS + 1) - DELAYS;
